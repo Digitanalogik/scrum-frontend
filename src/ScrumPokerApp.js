@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from 'components/Header';
 import Table from 'components/Table';
+import Input from 'components/Input';
 import './ScrumPokerStyle.css'
 
 const ScrumPokerApp = () => {
+  const [name, setName] = useState('Scrum Lad')
+
+  function changeName(e) {
+    setName(e.target.value);
+  }
+
   return (
     <div className="Page">
-      <Header />
+      <Header>
+        <Input id="Player" value={name} change={changeName} />
+      </Header>
       <Table room="casino" />
+
+
     </div>
   );
 }
