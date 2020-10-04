@@ -1,0 +1,33 @@
+a { 
+    text-decoration: none;
+}
+
+.card-container {
+    border: solid 2px #143F68;
+    background-color: #255684;
+    height: 30vh;
+    width: 20vh;
+    margin: 5vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px rgba(21, 64, 106, 0.8);
+}
+
+.card-value {
+    font-size: 20vh;
+    color: #143F68;
+    text-shadow: -1px -1px 1px rgba(44, 175, 206, 0.8),
+                  1px  1px 1px rgba(6, 44, 81, 0.8);
+}
+
+.selected {
+    background-color: #3D6892;
+    border: solid 2px #235381;
+    box-shadow: 4px  4px 4px rgba(144, 175, 205, 0.8),
+               -4px -4px 4px rgba(144, 175, 205, 0.8),
+                4px -4px 4px rgba(144, 175, 205, 0.8),
+               -4px  4px 4px rgba(144, 175, 205, 0.8);
+}

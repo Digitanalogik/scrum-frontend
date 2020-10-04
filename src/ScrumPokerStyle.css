@@ -1,0 +1,14 @@
+.Page {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+  background-color: #BED4EA;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
