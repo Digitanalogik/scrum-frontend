@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "name": "casino",
+        "password": null
+    },
+    {
+        "id": 2,
+        "name": "lounge",
+        "password": null
+    },
+    {
+        "id": 3,
+        "name": "devcave",
+        "password": null
+    },
+    {
+        "id": 4,
+        "name": "vip",
+        "password": "topsecret"
+    }
+]

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Header from 'components/Header';
 import Table from 'components/Table';
 import Input from 'components/Input';
+import RoomControl from 'components/RoomControl';
 import './ScrumPokerStyle.css'
 
 const ScrumPokerApp = () => {
@@ -15,6 +16,7 @@ const ScrumPokerApp = () => {
     <div className="Page">
       <Header>
         <Input id="Player" value={name} change={changeName} />
+        <RoomControl />
       </Header>
       <Table room="casino" />
 
