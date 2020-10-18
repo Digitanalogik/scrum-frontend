@@ -7,16 +7,13 @@ const Table = (props) => {
 
     console.log("Creating poker table in room", props.room);
 
-    function clickHandler(value) {
-        setSelected(value); 
-        let url = "http://localhost:8080/" + props.room + "/USERNAME/" + value;
-        console.log("URL = " + url);
-    }
-
     const renderCards = () => {
         const cards = [];
         for (let i=1; i<10; i++) {
-            cards.push(<Card key={i} value={i} click={() => clickHandler(i)} selected={selected === i} />);
+            cards.push(<Card key={i} value={i} selected={selected === i} click={() => {
+                setSelected(i); 
+                props.onVote(i);
+            }} />);
         }
         return cards;
     }
