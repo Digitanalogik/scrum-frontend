@@ -1,0 +1,14 @@
+.poker-table {
+    position: absolute;
+    top: 60px;
+    left: 20px;    
+    width: calc(100% - 40px);
+    height: calc(100% - 80px);
+    box-sizing: content-box;
+    display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    background-color: #5E87AF;
+    border: solid 2px #3D6993;
+    overflow-y: auto;
+}

@@ -4,13 +4,28 @@ import './card.css';
 const Card = (props) => {
 
     let cardClass = "card-container" + (props.selected ? " selected" : "");
-    return (
-        <div className={cardClass} onClick={props.click}>
-            <div className="card-value">
-                {props.value}
+
+    if (typeof props.title === 'undefined') {
+        return (
+            <div className={cardClass} onClick={props.click}>
+                <div className="card-value">
+                    {props.value}
+                </div>
             </div>
-        </div>
-    )
+        );    
+    } else {
+        return (
+            <div className={cardClass} onClick={props.click}>
+                <div className="card-title">
+                    {props.title}
+                </div>
+                <div className="card-value">
+                    {props.value}
+                </div>
+            </div>
+        );    
+    }
+
 }
 
 export default Card;

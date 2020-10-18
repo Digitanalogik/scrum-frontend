@@ -4,8 +4,7 @@ import './table.css'
 
 const Table = (props) => {
     const [selected, setSelected] = useState(0);
-
-    console.log("Creating poker table in room", props.room);
+    // console.log("Creating poker table in room", props.room);
 
     const renderCards = () => {
         const cards = [];
@@ -17,7 +16,6 @@ const Table = (props) => {
         }
         return cards;
     }
-    
 
     return (
         <div className="poker-table">

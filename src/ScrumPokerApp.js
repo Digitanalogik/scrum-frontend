@@ -1,106 +1,67 @@
 import React, { Component } from 'react';
 import { Client } from '@stomp/stompjs';
+import queryString from 'query-string';
 import Header from 'components/Header';
 import Table from 'components/Table';
-import Input from 'components/Input';
-import RoomControl from 'components/RoomControl';
+import Result from 'components/Result';
 import './ScrumPokerStyle.css'
 
 class ScrumPokerApp extends Component {
 
   state = {
-    serverTime: null,
-    localTime: null,
-    name: "Scrum Lad",
-    room: null,
-    players: null
+    name: "",
+    room: "",
+    players: null,
+    allVoted: false,
+    votes: []
   }
 
   componentDidMount() {
-    console.log("Component did mount!");
+    // console.log("URL params:", window.location.search);
+    const parsed = queryString.parse(window.location.search);
+    // console.log("URL parsed:", parsed);
+    if (typeof parsed.player !== 'undefined') {
+      this.setState({ name: parsed.player });
+    } else {
+      this.setState({ name: "Scrum Lad"})
+    }
+    if (typeof parsed.room !== 'undefined') {
+      this.setState({ room: parsed.room });
+    } else {
+      this.setState({ room: "Casino" });
+    }
 
     this.client = new Client();
 
     this.client.configure({
-      brokerURL: 'ws://localhost:8080/stomp',
+      brokerURL: 'ws://localhost:8080/scrumpoker',
       onConnect: () => {
-        console.log("onConnect");
-
-        this.client.subscribe('/queue/now', message => {
-          console.log("MESSAGE!", message);
-          try {
-            console.log("Got message:", message.body);
-            /*
-            const date = new Date(message.body);
-            this.setState({ localTime: date.toLocaleString() })
-            */
-            this.setState({ serverTime: message.body });
-          } catch {
-            console.log("Something odd happened while converting server message to local date/time! message.body =", message.body);
-            this.setState({ serverTime: message.body})
-          }
-        })
-
         this.client.subscribe('/room/listen', message => {
           console.log("SERVER MESSAGE:", message);
           this.setState({ player: message.body });
-          // alert(message.body);
-          // alert(message.body);
         });
 
         this.client.subscribe('/room/vote', message => {
-          console.log("SOMEBODY VOTED:", message);
-          //alert(message.body);
-      
-          //this.setState({ player: message.body });
-          // alert(message.body);
+          // this.setState({ votes: [...this.state.votes, message.body]})
+          console.log("SOMEBODY VOTED:", message.body);
         });
 
         this.client.subscribe('/room/done', message => {
-          console.log("ALL DONE!", message);
-          alert(message.body);
-      
-          //this.setState({ player: message.body });
+          this.setState({ votes: JSON.parse(message.body), allVoted: true });
+          console.log("ALL DONE!", message.body);
           // alert(message.body);
         });
-
-
       }
     });
 
     this.client.activate();
-    //setWebsocket(client);
     console.log("WebSocket set!", this.client); 
   }
 
-  clickHandler = () => {
-    this.client.publish({destination: '/poker/vote', body: "Moi!"});
-  }
-
   voteHandler = (param) => {
-    const vote = { room: "casino", player: this.state.name, vote: param };
-    console.log("ScrumPokerApp - voteHandler, param =", param);
+    const vote = { room: this.state.room, player: this.state.name, vote: param };
     this.client.publish({destination: '/poker/vote', body: JSON.stringify(vote)});
   }
-
-  /*
-  useEffect(() => {
-    let client = new Client();
-    client.configure({
-      brokerURL: 'ws://localhost:8080/scrumpoker',
-      onConnect: () => {
-        console.log("onConnect");
-        client.subscribe('/scrum/poker', message => {
-          console.log("MESSAGE!", message);
-          alert(message.body);
-        })
-      }
-    });
-    client.activate();
-    setWebsocket(client);
-    console.log("WebSocket set ----> "); 
-  }, [websocket, setWebsocket]);
-  */
 
   changeName = (e) => {
     this.setState({ name: e.target.value });
@@ -109,17 +70,10 @@ class ScrumPokerApp extends Component {
   render() {
     return (
       <div className="Page">
-        <Header>
-          <Input id="Player" value={this.state.name} change={this.changeName} />
-          <RoomControl />
-          <p>
-            Server time: {this.state.serverTime ? this.state.serverTime : 'no data'}
-          </p>
-          <p>
-            <button onClick={this.clickHandler}>Click me</button>
-          </p>
-        </Header>
-        <Table room="casino" onVote={this.voteHandler} />
+        <Header label="Player" player={this.state.name} room={this.state.room} onChangeName={this.changeName} />
+        {this.state.allVoted === false
+        ? (<Table room={this.state.room} onVote={this.voteHandler} />)
+        : (<Result votes={this.state.votes} />)}
       </div>
     );  
   }
